@@ -1,2 +1,2 @@
 # report
-Report WTPBot Plugin
+Report plugin for WTPBot
