@@ -7,6 +7,7 @@ const {
     EmbedBuilder,
     ButtonBuilder,
     ButtonStyle,
+    MessageFlags
 } = require('discord.js');
 const { handleResponse } = require('../commands/cmReport');
 const { handleResponseUser } = require('../commands/cuReport');
@@ -68,7 +69,7 @@ async function handleConfirmReport(interaction, db) {
     } else if (existing.reports?.[interaction.user.id]) {
         await interaction.reply({
             content: '⚠️ Vous avez déjà signalé ce contenu. Votre signalement est pris en compte.',
-            flags: 1 << 6,
+            flags: MessageFlags.Ephemeral,
         });
         return;
     }
@@ -114,7 +115,7 @@ async function handleConfirmReport(interaction, db) {
 }
 
 async function handleReportModalSubmit(interaction, client, db) {
-    await interaction.deferReply({ flags: 1 << 6 });
+    await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
     const messageId = interaction.customId.split('-')[1];
     const reason = interaction.fields.getTextInputValue('reason');
@@ -201,7 +202,7 @@ async function handleTakeReport(interaction, db) {
     const messageData = await reports.findOne({ _id: messageId });
 
     if (!messageData) {
-        await interaction.reply({ content: '❌ Le message signalé n\'existe plus ou est introuvable.', flags: 1 << 6 });
+        await interaction.reply({ content: '❌ Le message signalé n\'existe plus ou est introuvable.', flags: MessageFlags.Ephemeral });
         return;
     }
 
@@ -220,10 +221,10 @@ async function handleTakeReport(interaction, db) {
 
     try {
         await interaction.message.edit({ components: [updatedRow] });
-        await interaction.reply({ content: '✅ Vous avez pris en charge ce signalement.', flags: 1 << 6 });
+        await interaction.reply({ content: '✅ Vous avez pris en charge ce signalement.', flags: MessageFlags.Ephemeral });
     } catch (error) {
         console.error('[report] Take report error:', error.message);
-        await interaction.reply({ content: '❌ Une erreur est survenue lors de la mise à jour du signalement.', flags: 1 << 6 });
+        await interaction.reply({ content: '❌ Une erreur est survenue lors de la mise à jour du signalement.', flags: MessageFlags.Ephemeral });
     }
 }
 
@@ -237,25 +238,25 @@ async function handleAskSource(interaction, client, db) {
     const messageData = await reports.findOne({ _id: messageId });
 
     if (!messageData) {
-        await interaction.reply({ content: '❌ Le message signalé n\'existe plus ou est introuvable.', flags: 1 << 6 });
+        await interaction.reply({ content: '❌ Le message signalé n\'existe plus ou est introuvable.', flags: MessageFlags.Ephemeral });
         return;
     }
 
     const guild = client.guilds.cache.get(messageData.guildId);
     if (!guild) {
-        await interaction.reply({ content: '❌ Serveur introuvable.', flags: 1 << 6 });
+        await interaction.reply({ content: '❌ Serveur introuvable.', flags: MessageFlags.Ephemeral });
         return;
     }
 
     const channel = guild.channels.cache.get(messageData.channelId);
     if (!channel) {
-        await interaction.reply({ content: '❌ Salon introuvable.', flags: 1 << 6 });
+        await interaction.reply({ content: '❌ Salon introuvable.', flags: MessageFlags.Ephemeral });
         return;
     }
 
     const message = await channel.messages.fetch(messageId).catch(() => null);
     if (!message) {
-        await interaction.reply({ content: '❌ Le message original est introuvable.', flags: 1 << 6 });
+        await interaction.reply({ content: '❌ Le message original est introuvable.', flags: MessageFlags.Ephemeral });
         return;
     }
 
@@ -264,7 +265,7 @@ async function handleAskSource(interaction, client, db) {
     const alreadyRequested = existingRequest?.requests?.[user.id];
 
     if (alreadyRequested) {
-        await interaction.reply({ content: '⚠️ Vous avez déjà demandé la source de ce contenu.', flags: 1 << 6 });
+        await interaction.reply({ content: '⚠️ Vous avez déjà demandé la source de ce contenu.', flags: MessageFlags.Ephemeral });
         return;
     }
 
@@ -278,7 +279,7 @@ async function handleAskSource(interaction, client, db) {
     const sourceChannel = client.channels.cache.get(targetChannelId);
 
     if (!sourceChannel) {
-        await interaction.reply({ content: '❌ Le salon de destination est introuvable.', flags: 1 << 6 });
+        await interaction.reply({ content: '❌ Le salon de destination est introuvable.', flags: MessageFlags.Ephemeral });
         return;
     }
 
@@ -321,7 +322,7 @@ async function handleAskSource(interaction, client, db) {
         { upsert: true },
     );
 
-    await interaction.reply({ content: '✅ Votre demande de source a été envoyée dans le salon dédié.', flags: 1 << 6 });
+    await interaction.reply({ content: '✅ Votre demande de source a été envoyée dans le salon dédié.', flags: MessageFlags.Ephemeral });
 
     try {
         const updatedRow = new ActionRowBuilder().addComponents(
