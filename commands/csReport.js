@@ -6,6 +6,7 @@
  */
 
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { MessageFlags } = require("discord.js");
 const { reports } = require("../utils/enmapUtils");
 const { Report } = require("../files/modules");
 const { reportWorker } = require("../modules/report");
@@ -95,7 +96,7 @@ async function execute(interaction) {
 
     await interaction.reply({
         content: `Report envoyé avec succès !\nVous pouvez suivre votre signalement ici dans ce thread privé avec les modérateurs du serveur : ${threadUrl}\nNote : Si vous n'avez pas eu assez d'une pièce jointe pour votre signalement, vous pouvez aussi ajouter des preuves et/ou pièces jointes dans le thread privé qu'on vient de vous créer.`,
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
     });
     return;
 }

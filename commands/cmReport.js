@@ -13,6 +13,7 @@ const {
     ModalBuilder,
     TextInputBuilder,
     TextInputStyle,
+    MessageFlags,
 } = require("discord.js");
 const { Report } = require("../files/modules");
 const { reportWorker } = require("../modules/report");
@@ -128,7 +129,7 @@ async function handleResponse(interaction) {
 
     await interaction.reply({
         content: `Report envoyé avec succès !\nVous pouvez suivre le report ici dans ce thread privé avec les modérateurs du serveur : ${threadUrl}\nNote : Si vous avez d'autres pièces à conviction à apporter au ticket, vous pouvez les ajouter dans le thread privé qu'on vient de vous créer.`,
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
     });
     return;
 }

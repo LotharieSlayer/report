@@ -11,6 +11,7 @@ const {
     EmbedBuilder,
     ActionRowBuilder,
     ButtonBuilder,
+    MessageFlags,
 } = require("discord.js");
 const { Report } = require("../files/modules.js");
 
@@ -165,7 +166,7 @@ async function reportWorker(interaction, report, cpt) {
     if (reportSetup[0] == undefined) {
         await interaction.reply({
             content: `Impossible de finaliser le processus, l'envoi c'est bien effectué mais le propriétaire du serveur n'a pas configuré où se trouvait les threads privés !`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
         return;
     }

@@ -13,6 +13,7 @@ const {
     ModalBuilder,
     TextInputBuilder,
     TextInputStyle,
+    MessageFlags,
 } = require("discord.js");
 const { Report } = require("../files/modules");
 const { reportWorker } = require("../modules/report");
@@ -123,7 +124,7 @@ async function handleResponseUser(interaction) {
 
     await interaction.reply({
         content: `Report envoyé avec succès !\nVous pouvez suivre le report ici dans ce thread privé avec les modérateurs du serveur : ${threadUrl}\nNote : En signalant l'utilisateur de cette façon il ne vous a pas été permis de mettre des preuves ou des pièces jointes, vous pouvez les ajouter dans le thread privé qu'on vient de vous créer.`,
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
     });
     return;
 }

@@ -1,3 +1,4 @@
+const { MessageFlags } = require("discord.js");
 const { setupReport } = require("../utils/enmapUtils");
 
 async function addSetupCommand(slashCommand) {
@@ -58,7 +59,7 @@ async function execute(interaction) {
             ]);
             await interaction.reply({
                 content: `Channel pour les threads des reports ajouté au serveur dans <#${inputChannelReport.id}> !\nOutput du serveur dans <#${outputChannelReport}>.`,
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
             break;
     }
