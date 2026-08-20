@@ -19,4 +19,6 @@ module.exports = {
     DELETE_ON_MODERATOR_REACTION: true,
     /** @type {string} ID du salon de logs de modération */
     MODERATION_LOG_CHANNEL_ID: '1385805521478615081',
+    /** @type {string} ID du bot FranceBot */
+    FRANCEBOT_DISCORD_ID: '756169303971070042',
 };
