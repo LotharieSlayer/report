@@ -40,7 +40,7 @@ module.exports = {
         if (!message) return;
 
         // Check if this is FRANCE BOT
-        if (reaction.user.id === FRANCEBOT_DISCORD_ID) return;
+        if (user.id === FRANCEBOT_DISCORD_ID) return;
         console.log(`La réaction a été ajoutée par un utilisateur autre que FRANCE BOT, traitement de la réaction...`);
         // Check if there is FRANCE BOT in all reactions else do not consider this reaction
         const franceBotReaction = message.reactions.cache.find(r => r.users.cache.has(FRANCEBOT_DISCORD_ID));
