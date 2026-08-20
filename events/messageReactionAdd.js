@@ -14,38 +14,38 @@ const {
 module.exports = {
     name: 'messageReactionAdd',
     async execute(reaction, user) {
-        console.log(`Réaction ajoutée par ${user.username} sur le message ${reaction.message.id} avec l'emoji ${reaction.emoji.name}`);
+        // console.log(`Réaction ajoutée par ${user.username} sur le message ${reaction.message.id} avec l'emoji ${reaction.emoji.name}`);
         const client = user.client;
         const db = client.mongo.commons;
 
         if (reaction.partial) {
             try { await reaction.fetch(); } catch { return; }
-            console.log(`Réaction récupérée pour le message ${reaction.message.id}`);
+            // console.log(`Réaction récupérée pour le message ${reaction.message.id}`);
         }
         if (reaction.message.partial) {
             try { await reaction.message.fetch(); } catch { return; }
-            console.log(`Message récupéré pour la réaction sur le message ${reaction.message.id}`);
+            // console.log(`Message récupéré pour la réaction sur le message ${reaction.message.id}`);
         }
         if (user.partial) {
             try { await user.fetch(); } catch { return; }
-            console.log(`Utilisateur récupéré : ${user.username}`);
+            // console.log(`Utilisateur récupéré : ${user.username}`);
         }
 
         if (reaction.emoji.name !== CUSTOM_EMOJI_NAME || reaction.emoji.id !== CUSTOM_EMOJI_ID) return;
-        console.log(`La réaction correspond à l'emoji personnalisé ${CUSTOM_EMOJI_NAME} (${CUSTOM_EMOJI_ID})`);
+        // console.log(`La réaction correspond à l'emoji personnalisé ${CUSTOM_EMOJI_NAME} (${CUSTOM_EMOJI_ID})`);
         if (user.bot) return;
-        console.log(`L'utilisateur ${user.username} n'est pas un bot, traitement de la réaction...`);
+        // console.log(`L'utilisateur ${user.username} n'est pas un bot, traitement de la réaction...`);
 
         const message = reaction.message;
         if (!message) return;
 
         // Check if this is FRANCE BOT
         if (user.id === FRANCEBOT_DISCORD_ID) return;
-        console.log(`La réaction a été ajoutée par un utilisateur autre que FRANCE BOT, traitement de la réaction...`);
+        // console.log(`La réaction a été ajoutée par un utilisateur autre que FRANCE BOT, traitement de la réaction...`);
         // Check if there is FRANCE BOT in all reactions else do not consider this reaction
         const franceBotReaction = message.reactions.cache.find(r => r.users.cache.has(FRANCEBOT_DISCORD_ID));
         if (!franceBotReaction) return;
-        console.log(`FRANCE BOT a originellement réagi à ce message, traitement de la réaction...`);
+        // console.log(`FRANCE BOT a originellement réagi à ce message, traitement de la réaction...`);
 
         const member = await message.guild.members.fetch(user.id);
         const isModerator = member.roles.cache.some(role => MODERATOR_ROLES.includes(role.id));
